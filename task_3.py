@@ -14,9 +14,12 @@ class Puppy:
 
 class Dog:
     def __init__(self, N):
-        pupies = []
-        for i in N:
-            p = Puppy(i)
-        
+        self.puppies = []
+
+class Vet:
+    def __init__(self):
+        pass
+
+d = Dog(3)
 
     
