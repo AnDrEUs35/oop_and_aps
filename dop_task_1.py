@@ -6,10 +6,7 @@
 Класс Creator имеет атрибут, обозначающий количество продуктов, которое у него заказали. У может увеличивать количество продуктов у себя,
 отправлять продукты.
 
-
-
-
-
+Класс покупатели имеет атрибут купленные продукты. Покупатели могут покупать товар и выводить информацию о купленных продуктах.
 '''
 
 
@@ -52,13 +49,13 @@ class Shop:
 
     def sell(self):
         print(self.products, ' - до продажи')
+        self.buyers = Buyers()
+        self.buyers.buy()
         for i in self.products.keys():
-            self.products[i] -= r.randint(0, 100)
-            if self.products[i] < 0:
-                self.products[i] = 0
+            self.products[i] -= self.buyers.purchased_products[i]
         print(self.products, ' - после продажи')
     
-    def is_products_over(self,):
+    def is_products_over(self):
         for i in self.products.keys():
             if self.products[i] < self.min:
                 self.get_products(self.min) 
@@ -67,17 +64,32 @@ class Shop:
     def get_products(self, order):
         self.creator = Creator(order)
         self.creator.replenishment()
-        self.creator.sent()
         for i in self.products.keys():
             self.products[i] += self.creator.products[i]
+        self.creator.sent()
 
 
+class Buyers:
+    
+    
+    def __init__(self):
+        self.purchased_products = {'Выпечка': 0, 'Молочка': 0, 'Овощи и фрукты': 0, 'Заморозка': 0}
+    
+    
+    def buy(self):
+        for i in self.purchased_products.keys():
+            self.purchased_products[i] += r.randint(0, 100)
 
+    
+    def analys(self):
+        print(self.purchased_products, ' - купленные товары')
+        print('Самое большое количество купленного товара - ', max(self.purchased_products.values()))
 
 
 if __name__ == '__main__':
     s = Shop(300)
     s.is_products_over()
     s.sell()
+    s.buyers.analys()
 
 
