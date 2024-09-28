@@ -1,15 +1,23 @@
 import math as m
+
+
 class Pyramid:
+
+
     def __init__(self, max_h):
         self.max_h = max_h
         self.bricks_count = 0
         self.h = 1
         self.Sn = []
+
         for i in range(self.max_h+1):
             a =(2*self.max_h - (i-1)) * i / 2
             self.Sn.append(a)
+
+
     def add_bricks(self, N):
         self.bricks_count += N
+
         if self.bricks_count >= self.Sn[0]:
             self.h += 1
             self.Sn.remove(self.Sn[0])
@@ -17,9 +25,12 @@ class Pyramid:
             print('Пирамида разрушилась')
         else:
             pass
+    
+    
     def get_height(self):
         print(self.h, ' высота')
             
+    
     def is_done(self):
         if len(self.Sn) >= 1:
             self.done = self.bricks_count / self.Sn[-1] * 100
@@ -28,14 +39,19 @@ class Pyramid:
         
 
 
-
 class Builder:
-    def __init__(self, bricks):
+
+
+    def __init__(self, bricks, hight):
         self.bricks = bricks
-        self.my_pyramid = Pyramid(15)
+        self.my_pyramid = Pyramid(hight)
         self.day = 0
+
+
     def buy_bricks(self):
         self.bricks += 6
+
+
     def build_pyramid(self, n):
         if 1 <= n <= 5:
             if self.bricks >= n:
@@ -47,20 +63,27 @@ class Builder:
                 return n
         else:
             print('Введите другое число')
+
+
     def work_day(self):
         self.day += 1
+
         print(self.day, 'день')
+
         N = self.build_pyramid(5)
+
         self.my_pyramid.add_bricks(N)
         self.my_pyramid.get_height()
+
         print(self.bricks, ' кол-во кирпичей')
+        
         s = self.my_pyramid.is_done()
+
         if s == 100:
             exit(0)
 
 
-p = Pyramid(15)
-print(p.Sn[-1])
-builder = Builder(13)
-while True:
-    builder.work_day()
+if __name__ == '__main__':
+    builder = Builder(13, 15)
+    while True:
+        builder.work_day()

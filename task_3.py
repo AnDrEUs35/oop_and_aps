@@ -1,15 +1,19 @@
 class Puppy:
+
+
     def __init__(self, index):
         self.states = {'1': 'болеет', '2': 'выздоравливает', '3': 'здоров'}
         self.index = index
         self.state = self.states['1']
     
+
     def get_treatment(self):
         if self.state == 'болеет':
             self.state = self.states['2']
         elif self.state == 'выздоравливает':
             self.state = self.states['3']
     
+
     def is_healthy(self):
         if self.state == self.states['3']:
             return True
@@ -17,9 +21,11 @@ class Puppy:
             return False
 
 
-class Dog(Puppy):
-    def __init__(self, N):
-        super().__init__(N)
+class Dog():
+    def __init__(self, index, N):
+        self.states = {'1': 'болеет', '2': 'выздоравливает', '3': 'здоров'}
+        self.index = index
+        self.state = self.states['1']
         self.puppies = []
         for i in range(N+1):
             p = Puppy(i)
@@ -30,7 +36,22 @@ class Dog(Puppy):
             p = self.puppies[i]
             p.get_treatment()
         print('Щенки подлечились')
+
+
+    def get_treatment(self):
+        if self.state == 'болеет':
+            self.state = self.states['2']
+        elif self.state == 'выздоравливает':
+            self.state = self.states['3']
     
+    
+    def is_healthy(self):
+        if self.state == self.states['3']:
+            return True
+        else:
+            return False
+    
+
     def all_are_healthy(self):
         count = 0
         for i in range(len(self.puppies)):
@@ -48,7 +69,7 @@ class Dog(Puppy):
 class Vet:
     def __init__(self, name, obj_N):
         self.name = name
-        self.plant = Dog(obj_N)
+        self.plant = Dog(0, obj_N)
     
     def work(self):
         self.plant.get_treatment()
@@ -77,14 +98,15 @@ class Vet:
             print('Щенки пока не отданы')
         
 
-v = Vet('Andrew', 4)
-v.knowledge_base()
-v.plant.heal_all()
-v.work()
-v.care()
-v.plant.heal_all()
-v.care()
-v.knowledge_base()
+if __name__ == '__main__':
+    v = Vet('Andrew', 4)
+    v.knowledge_base()
+    v.plant.heal_all()
+    v.work()
+    v.care()
+    v.plant.heal_all()
+    v.care()
+    v.knowledge_base()
 
 
     
