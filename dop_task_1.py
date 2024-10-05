@@ -44,28 +44,28 @@ class Creator:
         
 class Shop:
     def __init__(self, min):
-        self.products = {'Выпечка': 0, 'Молочка': 0, 'Овощи и фрукты': 0, 'Заморозка': 0}
+        self.shop_products = {'Выпечка': 0, 'Молочка': 0, 'Овощи и фрукты': 0, 'Заморозка': 0}
         self.min = min
 
     def sell(self):
-        print(self.products, ' - до продажи')
+        print(self.shop_products, ' - до продажи')
         self.buyers = Buyers()
         self.buyers.buy()
-        for i in self.products.keys():
-            self.products[i] -= self.buyers.purchased_products[i]
-        print(self.products, ' - после продажи')
+        for i in self.shop_products.keys():
+            self.shop_products[i] -= self.buyers.purchased_products[i]
+        print(self.shop_products, ' - после продажи')
     
     def is_products_over(self):
-        for i in self.products.keys():
-            if self.products[i] < self.min:
+        for i in self.shop_products.keys():
+            if self.shop_products[i] < self.min:
                 self.get_products(self.min) 
 
 
     def get_products(self, order):
         self.creator = Creator(order)
         self.creator.replenishment()
-        for i in self.products.keys():
-            self.products[i] += self.creator.products[i]
+        for i in self.shop_products.keys():
+            self.shop_products[i] += self.creator.products[i]
         self.creator.sent()
 
 

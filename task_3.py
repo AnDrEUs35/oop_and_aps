@@ -1,21 +1,24 @@
+import random as r
+
 class Puppy:
 
 
     def __init__(self, index):
-        self.states = {'1': 'болеет', '2': 'выздоравливает', '3': 'здоров'}
+        self.states = ['болеет', 'выздоравливает', 'здоров']
         self.index = index
-        self.state = self.states['1']
+        self.state = r.choice(self.states)
     
 
     def get_treatment(self):
-        if self.state == 'болеет':
-            self.state = self.states['2']
-        elif self.state == 'выздоравливает':
-            self.state = self.states['3']
+        chance = r.randint(0, 1)
+        if self.state == 'болеет' and chance == 1:
+            self.state = self.states[1]
+        elif self.state == 'выздоравливает' and chance == 1:
+            self.state = self.states[2]
     
 
     def is_healthy(self):
-        if self.state == self.states['3']:
+        if self.state == self.states[2]:
             return True
         else:
             return False
@@ -23,9 +26,9 @@ class Puppy:
 
 class Dog():
     def __init__(self, index, N):
-        self.states = {'1': 'болеет', '2': 'выздоравливает', '3': 'здоров'}
+        self.states = ['болеет', 'выздоравливает', 'здоров']
         self.index = index
-        self.state = self.states['1']
+        self.state = r.choice(self.states)
         self.puppies = []
         for i in range(N+1):
             p = Puppy(i)
@@ -40,13 +43,13 @@ class Dog():
 
     def get_treatment(self):
         if self.state == 'болеет':
-            self.state = self.states['2']
+            self.state = self.states[1]
         elif self.state == 'выздоравливает':
-            self.state = self.states['3']
+            self.state = self.states[2]
     
     
     def is_healthy(self):
-        if self.state == self.states['3']:
+        if self.state == self.states[2]:
             return True
         else:
             return False
@@ -100,13 +103,13 @@ class Vet:
 
 if __name__ == '__main__':
     v = Vet('Andrew', 4)
-    v.knowledge_base()
-    v.plant.heal_all()
-    v.work()
-    v.care()
-    v.plant.heal_all()
-    v.care()
-    v.knowledge_base()
-
+    while True:
+        v.knowledge_base()
+        v.plant.heal_all()
+        v.work()
+        v.care()
+        v.knowledge_base()
+        if v.plant.is_healthy() == True and v.plant.all_are_healthy() == True:
+            break
 
     

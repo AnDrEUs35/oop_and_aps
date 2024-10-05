@@ -24,6 +24,7 @@ class Pyramid:
             self.Sn.remove(self.Sn[0])
         if self.h > self.max_h:
             print('Пирамида разрушилась')
+            exit(0)
         else:
             pass
     
@@ -43,9 +44,9 @@ class Pyramid:
 class Builder:
 
 
-    def __init__(self, bricks, hight):
+    def __init__(self, bricks, height):
         self.bricks = bricks
-        self.my_pyramid = Pyramid(hight)
+        self.my_pyramid = Pyramid(height)
         self.day = 0
 
 
@@ -54,16 +55,13 @@ class Builder:
 
 
     def build_pyramid(self, n):
-        if 1 <= n <= 5:
-            if self.bricks >= n:
-                self.bricks -= n
-                return n
-            else:
-                self.buy_bricks()
-                self.bricks -= n
-                return n
+        if self.bricks >= n:
+            self.bricks -= n
+            return n
         else:
-            print('Введите другое число')
+            self.buy_bricks()
+            self.bricks -= n
+            return n
 
 
     def work_day(self):
@@ -71,7 +69,7 @@ class Builder:
         b = [1, 2, 3, 4, 5]
         print(self.day, 'день')
         c = r.choice(b)
-        N = self.build_pyramid(c)
+        self.build_pyramid(c)
 
         self.my_pyramid.add_bricks(c)
         self.my_pyramid.get_height()
