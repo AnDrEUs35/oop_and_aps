@@ -1,4 +1,5 @@
 import math as m
+import random as r
 
 
 class Pyramid:
@@ -67,12 +68,12 @@ class Builder:
 
     def work_day(self):
         self.day += 1
-
+        b = [1, 2, 3, 4, 5]
         print(self.day, 'день')
+        c = r.choice(b)
+        N = self.build_pyramid(c)
 
-        N = self.build_pyramid(5)
-
-        self.my_pyramid.add_bricks(N)
+        self.my_pyramid.add_bricks(c)
         self.my_pyramid.get_height()
 
         print(self.bricks, ' кол-во кирпичей')
