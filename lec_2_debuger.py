@@ -11,15 +11,13 @@ def debug(func):
         value = func(*args, **kwargs)
         print(f"Функцию {func.__name__} вернула значение {value}")
         return value
-
     return wrapper_debug
 
 
 
-debug_sqrt = debug(math.sqrt)
+debug_factorial = debug(math.factorial)
 
 def show_debug_function(terms=5):
-    return [debug_sqrt(n) for n in range(terms+1)]
+    return [debug_factorial(n) for n in range(terms+1)]
 
-
-show_debug_function(25)
+show_debug_function(7)

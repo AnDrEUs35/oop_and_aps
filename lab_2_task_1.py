@@ -1,14 +1,13 @@
 def summator(a):
     def decorator(func):
-        def sum(*args, **kwargs):
-            b = func(*args, **kwargs)
+        def sum(b):
+            b = func(b)
             return a + b
         return sum
     return decorator
 
 @summator(8)
-def func():
-    b = int(input('Введите b: '))
+def func(b):
     return b
 
-print(func())
+print(func(12))

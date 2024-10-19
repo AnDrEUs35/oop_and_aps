@@ -11,8 +11,11 @@ def decorator(func):
             result = a / b
         return result
     return caculator
+
+
 @decorator
 def input(a, b, sign):
     return (a, b, sign)
+
 
 print(input(2, 3, '/'))
