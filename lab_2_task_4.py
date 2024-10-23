@@ -41,7 +41,7 @@ class Planet:
 
     @classmethod
     def gibt_es_viele_von_uns(cls):
-        if cls.count_obj > 2:
+        if cls.count_obj > 5:
             print("Es gibt viele von uns")
         else:
             print('Es gibt wenig von uns')
