@@ -44,7 +44,7 @@ class Warrior:
 
     def atack(self, who):
         if who.HP > 0:
-            who.HP -= Warrior.damage
+            who.HP -= Warrior.damage * len()
             Warrior.sum_damage += Warrior.damage
             if who.HP <= 0:
                 who.is_dead()
@@ -55,10 +55,22 @@ class Warrior:
             cls.damage = 300
         elif cls.damage == 300:
             cls.damage = 100
+    
+    
     @property
     def sum_of_damage(self):
         print(f'Общий нанесённый воинами урон: {Warrior.sum_damage}')
 
+    
+    def info_about_unit(self, unit):
+        print(f'{unit.HP} - здоровье')
+        print(f'{unit.damage} - урон')
+
+    @classmethod
+    def info_about_class(cls):
+        print(f'{cls.count_ex} - всего юнитов класса {cls}')
+        print(f'{cls.sum_damage} - нанесено урона классом {cls}')
+        print(f'{cls.sum_dead} - всего умерло из класса {cls}')
 
 
 
@@ -109,6 +121,17 @@ class Mage:
     def sum_of_damage(self):
         print(f'Общий нанесённый магами урон: {Mage.sum_damage}')
 
+    
+    def info_about_unit(self, unit):
+        print(f'{unit.HP} - здоровье')
+        print(f'{unit.damage} - урон')
+
+    @classmethod
+    def info_about_class(cls):
+        print(f'{cls.count_ex} - всего юнитов класса {cls}')
+        print(f'{cls.sum_damage} - нанесено урона классом {cls}')
+        print(f'{cls.sum_dead} - всего умерло из класса {cls}')
+
 
 
 class Skeleton:
@@ -154,54 +177,49 @@ class Skeleton:
         print(f'Общий нанесённый скелетами урон: {Skeleton.sum_damage}')
 
 
-class Player:
-    def __init__(self):
-        self.Warrior_list = []
-        self.Mage_list = []
-        self.Skeleton_list = []
-    
-    def spawn_unit(self, unit_class):
-        unit = unit_class()
-        if unit_class == Warrior:
-            self.Warrior_list.append(unit)
-        elif unit_class == Mage:
-            self.Mage_list.append(unit)
-
     def info_about_unit(self, unit):
         print(f'{unit.HP} - здоровье')
         print(f'{unit.damage} - урон')
 
-
-    def info_about_class(self, cls):
+    @classmethod
+    def info_about_class(cls):
         print(f'{cls.count_ex} - всего юнитов класса {cls}')
         print(f'{cls.sum_damage} - нанесено урона классом {cls}')
-        print(f'{cls.sum_dead} - всего умерло из класса {cls}')    
+        print(f'{cls.sum_dead} - всего умерло из класса {cls}')
+
+
+
+Warrior_list = []
+Mage_list = []
+Skeleton_list = []
     
-player = Player()
-for _ in range(5):
-    player.spawn_unit(Warrior)
-    player.spawn_unit(Mage)
+def spawn_unit(unit_class, class_list):
+    unit = unit_class()
+    class_list.append(unit)
+
+
+spawn_unit(Warrior, Warrior_list)
+spawn_unit(Mage, Mage_list)
+
 for _ in range(3):
-    player.Warrior_list[0].atack(player.Mage_list[0])
-player.Warrior_list[0].sum_of_damage
+    Warrior_list[0].atack(Mage_list[0])
+Warrior_list[0].sum_of_damage
 
 for _ in range(20):
-    player.Mage_list[0].create_skeleton(player.Skeleton_list)
+    Mage_list[0].create_skeleton(Skeleton_list)
 
 Warrior.count()
 Mage.count()
 Skeleton.count()
 
 Warrior.improve_damage()
-player.info_about_unit(player.Warrior_list[0])
+info_about_unit(Warrior_list[0])
 Warrior.improve_damage()
-player.info_about_unit(player.Warrior_list[0])
+info_about_unit(Warrior_list[0])
 
-player.Skeleton_list[0].army_atack(player.Warrior_list[3])
+Skeleton_list[0].army_atack(Warrior_list[3])
 
-player.Mage_list[2].atack(player.Skeleton_list[5])
+Mage_list[2].atack(Skeleton_list[5])
 
 Warrior.count()
 
-player.info_about_unit(player.Mage_list[0])
-player.info_about_class(Mage)
