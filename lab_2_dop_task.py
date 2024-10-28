@@ -9,9 +9,10 @@
 # Игрок может создавать сколько угодно юнитов при помощи метода spawn_unit(класс создаваемого юнита) класса Player
 # Может управлять этими юнитами с помощью метода atack(кого), который есть в каждом классе.
 # Может использовать особые способности классов:
-# imporove_damage у воинов
-# create_skeleton у магов
-# army_atack  у скелетов
+# imporove_damage() у воинов
+# create_skeleton() у магов
+# meteorite_atack() у магов
+# army_atack()  у скелетов
 # Может получать информацию о том, жив ли юнит с помощью метода sum_of_damage у каждого класса
 # Может узнавать, жив ли юнит при помощи is_dead() у каждого класса
 # Может получить информацию о конкретном юните через метод info_about_unit(юнит) класса Player
@@ -45,11 +46,14 @@ class Warrior:
 
 
     def atack(self, who):
-        if who.HP > 0:
-            who.HP -= Warrior.damage
-            Warrior.sum_damage += Warrior.damage
-            if who.HP <= 0:
-                who.is_dead()
+        if self.HP > 0:
+            if who.HP > 0:
+                who.HP -= Warrior.damage
+                Warrior.sum_damage += Warrior.damage
+                if who.HP <= 0:
+                    who.is_dead()
+        else:
+            print('выбранный юнит мёртв')
     @staticmethod
     def selected_atack(selected_units, selected_enemy):
         if len(selected_enemy) == len(selected_units):
@@ -113,14 +117,16 @@ class Mage:
 
 
     def atack(self, who):
-        if who.HP > 0:
-            who.HP -= self.damage
-            if who.HP <= 0:
-                who.is_dead()
-            Mage.sum_damage += self.damage
+        if self.HP > 0:
+            if who.HP > 0:
+                who.HP -= self.damage
+                if who.HP <= 0:
+                    who.is_dead()
+                Mage.sum_damage += self.damage
+            else:
+                print('Хватит бить мёртвых')
         else:
-            print('Хватит бить мёртвых')
-
+            print('выбранный юнит мёртв')
     
     @staticmethod
     def selected_atack(selected_units, selected_enemy):
@@ -134,14 +140,18 @@ class Mage:
 
 
     def meteorite_atack(self, selected_enemy):
-        for i in range(len(selected_enemy)):
-            if selected_enemy[i].HP > 0:
-                selected_enemy[i].HP -= 500
-                if selected_enemy[i].HP <= 0:
-                    selected_enemy[i].is_dead()
-                Mage.sum_damage += 500
-            else:
-                print('Хватит бить мёртвых')
+        if self.HP > 0:
+            for i in range(len(selected_enemy)):
+                if selected_enemy[i].HP > 0:
+                    selected_enemy[i].HP -= 500
+                    if selected_enemy[i].HP <= 0:
+                        selected_enemy[i].is_dead()
+                    Mage.sum_damage += 500
+                else:
+                    print('Хватит бить мёртвых')
+        else:
+            print('выбранный юнит мёртв')
+
 
     @staticmethod
     def create_skeleton(skeletons):
@@ -194,11 +204,14 @@ class Skeleton:
 
 
     def atack(self, who):
-        if who.HP > 0:
-            who.HP -= self.damage
-            Skeleton.sum_damage += self.damage
-            if who.HP <= 0:
-                who.is_dead()
+        if self.HP > 0:
+            if who.HP > 0:
+                who.HP -= self.damage
+                Skeleton.sum_damage += self.damage
+                if who.HP <= 0:
+                    who.is_dead()
+        else:
+            print('выбранный юнит мёртв')
 
 
     @staticmethod
@@ -278,4 +291,13 @@ Warrior.info_about_class()
 Mage.info_about_class()
 Skeleton.info_about_class()
 
+for i in range(len(Warrior_list)):
+    Warrior_list[i].info_about_unit()
+print('')
 
+for i in range(len(Mage_list)):
+    Mage_list[i].info_about_unit()
+print('')
+
+for i in range(len(Skeleton_list)):
+    Skeleton_list[i].info_about_unit()
