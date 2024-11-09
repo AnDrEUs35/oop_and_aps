@@ -10,7 +10,7 @@ class Businessman:
         self._business = 'Нет'
     
     
-    def info(self):
+    def _info(self):
         print(f'Имя - {self.name} \nВозраст - {self.age} \nКапитал - {self._money} \nБизнес - {self._business}')
     
 
@@ -66,7 +66,7 @@ businessman1 = Businessman('Пётр', 23, 0)
 businessman2 = Businessman()
 
 Businessman.def_info()
-businessman1.info()
+businessman1._info()
 
 restourant1 = RestourantBusiness(100000000)
 house1 = House(120, 10000000)
@@ -76,4 +76,4 @@ businessman1.earn_money(1000000000000)
 businessman1.buy_business(house1, 10)
 print(f'Владелец - {house1.owner}')
 
-businessman1.info()
+businessman1._info()
