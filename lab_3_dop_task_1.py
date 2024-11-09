@@ -4,6 +4,8 @@ class Unit:
     def info_about_unit(self):
         print(f'{self.HP} - здоровье')
         print(f'{self.damage} - урон')
+        if isinstance(self, Mage) == True:
+            print(f'{self.mana} - мана') 
 
 
     @classmethod
@@ -29,6 +31,7 @@ class Unit:
 class Warrior(Unit):
 
     count_ex = 0
+    cost = 500
 
     def __init__(self):
         Warrior.sum_damage = 0
@@ -40,7 +43,7 @@ class Warrior(Unit):
 
     @classmethod
     def count(cls):
-        print(cls.count_ex, '- количество воинов')
+        print(cls.count_ex, '- количество воинов всего')
         return cls.count_ex
 
 
@@ -77,6 +80,7 @@ class Warrior(Unit):
 class Mage(Unit):
 
     count_ex = 0
+    cost = 700
 
     def __init__(self):
         self.HP = 300
@@ -84,11 +88,12 @@ class Mage(Unit):
         Mage.count_ex += 1
         Mage.sum_damage = 0
         Mage.sum_dead = 0
+        self.mana = 2000
 
 
     @classmethod
     def count(cls):
-        print(cls.count_ex, '- количество магов')
+        print(cls.count_ex, '- количество магов всего')
         return cls.count_ex
     
 
@@ -102,8 +107,9 @@ class Mage(Unit):
 
 
     def atack(self, who):
-        if self.HP > 0:
+        if self.HP > 0 and self.mana >= 20:
             if who.HP > 0:
+                self.mana -= 20
                 who.HP -= self.damage
                 if who.HP <= 0:
                     who._is_dead()
@@ -111,11 +117,12 @@ class Mage(Unit):
             else:
                 print('Хватит бить мёртвых')
         else:
-            print('выбранный юнит мёртв')
+            print('выбранный юнит мёртв или лишился маны, что одно и то же')
 
 
     def meteorite_atack(self, selected_enemy):
-        if self.HP > 0:
+        if self.HP > 0 and self.mana >= 1000:
+            self.mana -= 1000
             for i in range(len(selected_enemy)):
                 if selected_enemy[i].HP > 0:
                     selected_enemy[i].HP -= 500
@@ -128,17 +135,21 @@ class Mage(Unit):
             print('выбранный юнит мёртв')
 
 
-    @staticmethod
-    def create_skeleton(skeletons):
-        skeleton = Skeleton()
-        skeletons.append(skeleton)
+    
+    def create_skeleton(self, skeletons):
+        if self.mana >= 100:
+            self.mana -= 100
+            skeleton = Skeleton()
+            skeletons.append(skeleton)
         return skeletons
 
 
 
 
 class Skeleton(Unit):
+
     count_ex = 0
+
     def __init__(self):
         self.HP = 200
         self.damage = 50
@@ -149,7 +160,7 @@ class Skeleton(Unit):
 
     @classmethod
     def count(cls):
-        print(cls.count_ex, '- количество скелетов')
+        print(cls.count_ex, '- количество скелетов всего')
         return cls.count_ex
 
 
@@ -178,61 +189,82 @@ class Skeleton(Unit):
             self.atack(who)
 
 
+class Player:
+    def __init__(self):
+        self.gold = 10000
+        self.warriors = []
+        self.mages = []
+        self.skeletons = []
+    
+
+    def spawn_unit(self, unit_class, class_list, number):
+            for _ in range(number):
+                if self.gold >= unit_class.cost:
+                    self.gold -= unit_class.cost
+                    unit = unit_class()
+                    class_list.append(unit)
+                else:
+                    print('мало золота')
+
+
 if __name__ == '__main__':
+    p1 = Player()
+    p2 = Player()
 
-
-    Warrior_list = []
-    Mage_list = []
-    Skeleton_list = []
-        
-    def spawn_unit(unit_class, class_list):
-        unit = unit_class()
-        class_list.append(unit)
-
-    for _ in range(10):
-        spawn_unit(Warrior, Warrior_list)
-        spawn_unit(Mage, Mage_list)
-
-    for _ in range(3):
-        Warrior_list[0].atack(Mage_list[0])
+    p1.spawn_unit(Warrior, p1.warriors, 10)
+    p1.spawn_unit(Mage, p1.mages, 10)
 
     for _ in range(20):
-        Mage_list[0].create_skeleton(Skeleton_list)
+        p1.mages[0].create_skeleton(p1.skeletons)
 
-    Warrior.count()
-    Mage.count()
-    Skeleton.count()
+
+    p2.spawn_unit(Warrior, p2.warriors, 10)
+    p2.spawn_unit(Mage, p2.mages, 10)
+
+    for _ in range(20):
+        p2.mages[0].create_skeleton(p2.skeletons)
+
+
+    print(p1.gold)
+
+    p1.warriors[0].atack(p2.mages[0])
+    p1.warriors[0].atack(p2.mages[0])
+    p1.warriors[0].atack(p2.mages[0])
 
     Warrior.improve_damage()
-    Warrior_list[0].info_about_unit()
+    p1.warriors[0].info_about_unit()
     Warrior.improve_damage()
-    Warrior_list[0].info_about_unit()
-    Warrior_list[1].atack(Skeleton_list[1])
+    p1.warriors[0].info_about_unit()
+    p1.warriors[1].atack(p2.skeletons[1])
 
-    Skeleton_list[2].army_atack(Warrior_list[3])
+    p2.skeletons[2].army_atack(p1.warriors[3])
 
-    Mage_list[2].atack(Skeleton_list[5])
+    p2.mages[2].atack(p1.skeletons[5])
     for _ in range(3):
-        Mage_list[1].meteorite_atack(Warrior_list[1:9])
+        p1.mages[1].meteorite_atack(p2.warriors[1:9])
 
     Warrior.count()
-    Warrior_list[3].atack(Skeleton_list[2])
-    Warrior.selected_atack(Warrior_list[1:10], Skeleton_list[5:14])
-    Skeleton.selected_atack(Skeleton_list[5:8], Mage_list[0:3])
+    p1.warriors[3].atack(p2.skeletons[2])
+    Warrior.selected_atack(p1.warriors[1:10], p2.skeletons[5:14])
+    Skeleton.selected_atack(p2.skeletons[5:8], p1.mages[0:3])
 
     Warrior.info_about_class()
     Mage.info_about_class()
     Skeleton.info_about_class()
 
-    for i in range(len(Warrior_list)):
-        Warrior_list[i].info_about_unit()
+    for i in range(len(p1.warriors)):
+        p1.warriors[i].info_about_unit()
     print('')
 
-    for i in range(len(Mage_list)):
-        Mage_list[i].info_about_unit()
+    for i in range(len(p2.mages)):
+        p2.mages[i].info_about_unit()
     print('')
 
-    for i in range(len(Skeleton_list)):
-        Skeleton_list[i].info_about_unit()
+    for i in range(len(p1.skeletons)):
+        p1.skeletons[i].info_about_unit()
 
-    Warrior_list[9].atack(Skeleton_list[1])
+    print(p1.gold)
+
+    Warrior.count()
+    Mage.count()
+    Skeleton.count()
