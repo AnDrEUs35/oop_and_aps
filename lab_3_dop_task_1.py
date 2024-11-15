@@ -36,9 +36,10 @@ class Warrior(Unit):
     def __init__(self):
         Warrior.sum_damage = 0
         self.HP = 1000
-        Warrior.damage = 100
+        self.damage = 100
         Warrior.count_ex += 1
         Warrior.sum_dead = 0
+        self.dead = False
 
 
     @classmethod
@@ -52,6 +53,7 @@ class Warrior(Unit):
             Warrior.count_ex -= 1
             print('Воин пал.')
             Warrior.sum_dead += 1
+            self.dead = True
         else:
             print('Воин пока жив')
 
@@ -59,20 +61,19 @@ class Warrior(Unit):
     def atack(self, who):
         if self.HP > 0:
             if who.HP > 0:
-                who.HP -= Warrior.damage
-                Warrior.sum_damage += Warrior.damage
+                who.HP -= self.damage
+                Warrior.sum_damage += self.damage
                 if who.HP <= 0:
                     who._is_dead()
         else:
             print('выбранный юнит мёртв')
 
 
-    @classmethod
-    def improve_damage(cls):
-        if cls.damage == 100:
-            cls.damage = 300
-        elif cls.damage == 300:
-            cls.damage = 100
+    def improve_damage(self):
+        if self.damage == 100:
+            self.damage = 300
+        elif self.damage == 300:
+            self.damage = 100
 
 
 
@@ -89,6 +90,7 @@ class Mage(Unit):
         Mage.sum_damage = 0
         Mage.sum_dead = 0
         self.mana = 2000
+        self.dead = False
 
 
     @classmethod
@@ -102,6 +104,7 @@ class Mage(Unit):
             Mage.count_ex -= 1
             print('Маг пал.')
             Mage.sum_dead += 1
+            self.dead = True
         else:
             print('Маг пока жив')
 
@@ -156,6 +159,7 @@ class Skeleton(Unit):
         Skeleton.count_ex += 1
         Skeleton.sum_damage = 0
         Skeleton.sum_dead = 0
+        self.dead = False
 
 
     @classmethod
@@ -169,6 +173,7 @@ class Skeleton(Unit):
             Skeleton.count_ex -= 1
             print('Скелет пал.')
             Skeleton.sum_dead += 1
+            self.dead = True
         else:
             print('Скелет пока жив')
 
@@ -182,11 +187,6 @@ class Skeleton(Unit):
                     who._is_dead()
         else:
             print('выбранный юнит мёртв')
-    
-
-    def army_atack(self, who):
-        for _ in range(Skeleton.count_ex):
-            self.atack(who)
 
 
 class Player:
@@ -205,6 +205,47 @@ class Player:
                     class_list.append(unit)
                 else:
                     print('мало золота')
+
+    def is_winner(self):
+        if self == p1:
+            for i in range(len(p2.warriors)):
+                if p2.warriors[i].dead == False:
+                    return
+            for i in range(len(p2.mages)):
+                if p2.mages[i].dead == False:
+                    return
+            for i in range(len(p2.skeletons)):
+                if p2.skeletons[i].dead == False:
+                    return
+            self.gold = 10000 + 1000
+            print('Победил первый игрок')
+    
+        elif self == p2:
+            for i in range(len(p1.warriors)):
+                if p1.warriors[i].dead == False:
+                    return
+            for i in range(len(p1.mages)):
+                if p1.mages[i].dead == False:
+                    return
+            for i in range(len(p1.skeletons)):
+                if p1.skeletons[i].dead == False:
+                    return
+            self.gold = 10000 + 1000
+            print('Победил второй игрок')
+
+def who_is_winner():
+        p1.is_winner()
+        p2.is_winner()
+        
+        p1.mages.clear()
+        p1.warriors.clear()
+        p1.skeletons.clear()
+
+        p2.mages.clear()
+        p2.warriors.clear()
+        p2.skeletons.clear()
+
+
 
 
 if __name__ == '__main__':
@@ -231,10 +272,11 @@ if __name__ == '__main__':
     p1.warriors[0].atack(p2.mages[0])
     p1.warriors[0].atack(p2.mages[0])
 
-    Warrior.improve_damage()
-    p1.warriors[0].info_about_unit()
-    Warrior.improve_damage()
-    p1.warriors[0].info_about_unit()
+    p1.warriors[9].improve_damage()
+    p1.warriors[9].info_about_unit()
+    p1.warriors[9].improve_damage()
+    p1.warriors[9].info_about_unit()
+    
     p1.warriors[1].atack(p2.skeletons[1])
 
     p2.skeletons[2].army_atack(p1.warriors[3])
@@ -268,3 +310,9 @@ if __name__ == '__main__':
     Warrior.count()
     Mage.count()
     Skeleton.count()
+
+    p1.mages[3].meteorite_atack(p2.mages[0:10])
+    p1.mages[4].meteorite_atack(p2.warriors[0:10])
+    p1.mages[4].meteorite_atack(p2.warriors[0:10])
+    p1.mages[5].meteorite_atack(p2.skeletons[0:20])
+    who_is_winner()
