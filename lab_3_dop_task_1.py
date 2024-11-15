@@ -195,6 +195,10 @@ class Player:
         self.warriors = []
         self.mages = []
         self.skeletons = []
+
+        self.alive_warriors = 0
+        self.alive_mages = 0
+        self.alive_skeletons = 0
     
 
     def spawn_unit(self, unit_class, class_list, number):
@@ -205,6 +209,18 @@ class Player:
                     class_list.append(unit)
                 else:
                     print('мало золота')
+    
+    def desposition(self):
+        for i in range(len(self.warriors)):
+            if self.warriors[i].dead == False:
+                self.alive_warriors += 1
+        for i in range(len(self.mages)):
+            if self.mages[i].dead == False:
+                self.alive_mages += 1
+        for i in range(len(self.skeletons)):
+            if self.skeletons[i].dead == False:
+                self.alive_skeletons += 1
+        print(f'{self.alive_warriors} - живых воинов у игрока\n {self.alive_mages} - живых магов у игрока\n {self.alive_skeletons} - живых скелетов у игрока')
 
     def is_winner(self):
         if self == p1:
@@ -279,8 +295,6 @@ if __name__ == '__main__':
     
     p1.warriors[1].atack(p2.skeletons[1])
 
-    p2.skeletons[2].army_atack(p1.warriors[3])
-
     p2.mages[2].atack(p1.skeletons[5])
     for _ in range(3):
         p1.mages[1].meteorite_atack(p2.warriors[1:9])
@@ -315,4 +329,7 @@ if __name__ == '__main__':
     p1.mages[4].meteorite_atack(p2.warriors[0:10])
     p1.mages[4].meteorite_atack(p2.warriors[0:10])
     p1.mages[5].meteorite_atack(p2.skeletons[0:20])
+
+    p1.desposition()
+    p2.desposition()
     who_is_winner()
