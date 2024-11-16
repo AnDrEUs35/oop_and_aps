@@ -16,6 +16,15 @@ class Unit:
 
 
 
+def selected_atack(selected_units, selected_enemy):
+    if len(selected_enemy) == len(selected_units):
+        for i in range(len(selected_enemy)):
+            selected_units[i] - (selected_enemy[i])
+    elif len(selected_enemy) > len(selected_units):
+        print('выбрано недостаточно юнитов, один юнит может бить только одного противника')
+    else:
+        print('Выбрано недостаточно противников, их не хватает, чтобы мог участвовать каждый выбранный юнит')
+
 class Warrior(Unit):
 
     count_ex = 0
@@ -114,7 +123,7 @@ class Mage(Unit):
             print('выбранный юнит мёртв или лишился маны, что одно и то же')
 
 
-    def meteorite_atack(self, selected_enemy):
+    def __mul__(self, selected_enemy):
         if self.HP > 0 and self.mana >= 1000:
             self.mana -= 1000
             for i in range(len(selected_enemy)):
@@ -126,7 +135,7 @@ class Mage(Unit):
                 else:
                     print('Хватит бить мёртвых')
         else:
-            print('выбранный юнит мёртв')
+            print('выбранный юнит мёртв или лишился маны, что одно и то же')
 
 
     
@@ -213,17 +222,8 @@ class Player:
             if self.skeletons[i].dead == False:
                 self.alive_skeletons += 1
         print(f'{self.alive_warriors} - живых воинов у игрока\n {self.alive_mages} - живых магов у игрока\n {self.alive_skeletons} - живых скелетов у игрока')
-
-    @staticmethod
-    def __add__(selected_units, selected_enemy):
-        if len(selected_enemy) == len(selected_units):
-            for i in range(len(selected_enemy)):
-                selected_units[i] - (selected_enemy[i])
-        elif len(selected_enemy) > len(selected_units):
-            print('выбрано недостаточно юнитов, один юнит может бить только одного противника')
-        else:
-            print('Выбрано недостаточно противников, их не хватает, чтобы мог участвовать каждый выбранный юнит')
     
+
     def is_winner(self):
         if self == p1:
             winner1 = 0
@@ -299,49 +299,49 @@ if __name__ == '__main__':
     p1.warriors[0] - p2.mages[1]
     
 
-    # p1.warriors[9].improve_damage()
-    # p1.warriors[9].info_about_unit()
-    # p1.warriors[9].improve_damage()
-    # p1.warriors[9].info_about_unit()
+    p1.warriors[9].improve_damage()
+    p1.warriors[9].info_about_unit()
+    p1.warriors[9].improve_damage()
+    p1.warriors[9].info_about_unit()
     
-    # p1.warriors[1] - p2.skeletons[1]
+    p1.warriors[1] - p2.skeletons[1]
 
-    # p2.mages[2] - p1.skeletons[5]
-    # for _ in range(3):
-    #     p1.mages[1].meteorite_atack(p2.warriors[1:9])
+    p2.mages[2] - p1.skeletons[5]
+    for _ in range(3):
+        p1.mages[2] * p2.warriors[1:9]
 
-    # Warrior.count()
-    # p1.warriors[3] - p2.skeletons[2]
-    # p1.warriors[1:10] + p2.skeletons[5:14]
-    # p2.skeletons[5:8] + p1.mages[0:3]
+    Warrior.count()
+    p1.warriors[3] - p2.skeletons[2]
+    selected_atack(p1.warriors[1:10], p2.skeletons[5:14])
+    selected_atack(p2.skeletons[5:8], p1.mages[0:3])
 
-    # Warrior.info_about_class()
-    # Mage.info_about_class()
-    # Skeleton.info_about_class()
+    Warrior.info_about_class()
+    Mage.info_about_class()
+    Skeleton.info_about_class()
 
-    # for i in range(len(p1.warriors)):
-    #     p1.warriors[i].info_about_unit()
-    # print('')
+    for i in range(len(p1.warriors)):
+        p1.warriors[i].info_about_unit()
+    print('')
 
-    # for i in range(len(p2.mages)):
-    #     p2.mages[i].info_about_unit()
-    # print('')
+    for i in range(len(p2.mages)):
+        p2.mages[i].info_about_unit()
+    print('')
 
-    # for i in range(len(p1.skeletons)):
-    #     p1.skeletons[i].info_about_unit()
+    for i in range(len(p1.skeletons)):
+        p1.skeletons[i].info_about_unit()
 
-    # print(p1.gold)
+    print(p1.gold)
 
-    # Warrior.count()
-    # Mage.count()
-    # Skeleton.count()
+    Warrior.count()
+    Mage.count()
+    Skeleton.count()
 
-    # p1.mages[3].meteorite_atack(p2.mages[0:10])
-    # p1.mages[4].meteorite_atack(p2.warriors[0:10])
-    # p1.mages[4].meteorite_atack(p2.warriors[0:10])
-    # p1.mages[5].meteorite_atack(p2.skeletons[0:20])
+    p1.mages[3] * p2.mages[0:10]
+    p1.mages[4] * p2.warriors[0:10]
+    p1.mages[4] * p2.warriors[0:10]
+    p1.mages[5] * p2.skeletons[0:20]
 
-    # p1.desposition()
-    # p2.desposition()
+    p1.desposition()
+    p2.desposition()
 
-    # p1.warriors[1:10] + p2.skeletons[5:14]
+    selected_atack(p1.warriors[1:10], p2.skeletons[5:14])
