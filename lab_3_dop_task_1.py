@@ -54,6 +54,7 @@ class Warrior(Unit):
             print('Воин пал.')
             Warrior.sum_dead += 1
             self.dead = True
+            who_is_winner()
         else:
             print('Воин пока жив')
 
@@ -105,6 +106,7 @@ class Mage(Unit):
             print('Маг пал.')
             Mage.sum_dead += 1
             self.dead = True
+            who_is_winner()
         else:
             print('Маг пока жив')
 
@@ -174,6 +176,7 @@ class Skeleton(Unit):
             print('Скелет пал.')
             Skeleton.sum_dead += 1
             self.dead = True
+            who_is_winner()
         else:
             print('Скелет пока жив')
 
@@ -224,6 +227,7 @@ class Player:
 
     def is_winner(self):
         if self == p1:
+            winner1 = 0
             for i in range(len(p2.warriors)):
                 if p2.warriors[i].dead == False:
                     return
@@ -235,8 +239,11 @@ class Player:
                     return
             self.gold = 10000 + 1000
             print('Победил первый игрок')
+            winner1 = 1
+            return winner1
     
         elif self == p2:
+            winner2 = 0
             for i in range(len(p1.warriors)):
                 if p1.warriors[i].dead == False:
                     return
@@ -248,18 +255,20 @@ class Player:
                     return
             self.gold = 10000 + 1000
             print('Победил второй игрок')
+            winner2 = 1
+            return winner2
 
 def who_is_winner():
-        p1.is_winner()
-        p2.is_winner()
-        
-        p1.mages.clear()
-        p1.warriors.clear()
-        p1.skeletons.clear()
+        winner1 = p1.is_winner()
+        winner2 = p2.is_winner()
+        if winner1 == 1 or winner2 == 1:
+            p1.mages.clear()
+            p1.warriors.clear()
+            p1.skeletons.clear()
 
-        p2.mages.clear()
-        p2.warriors.clear()
-        p2.skeletons.clear()
+            p2.mages.clear()
+            p2.warriors.clear()
+            p2.skeletons.clear()
 
 
 
@@ -332,4 +341,3 @@ if __name__ == '__main__':
 
     p1.desposition()
     p2.desposition()
-    who_is_winner()
