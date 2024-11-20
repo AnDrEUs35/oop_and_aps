@@ -123,7 +123,7 @@ class Mage(Unit):
             print('выбранный юнит мёртв или лишился маны, что одно и то же')
 
 
-    def __mul__(self, selected_enemy):
+    def __mul__(self, selected_enemy): # атака метеоритом
         if self.HP > 0 and self.mana >= 1000:
             self.mana -= 1000
             for i in range(len(selected_enemy)):
@@ -202,12 +202,21 @@ class Player:
         self.alive_skeletons = 0
     
 
-    def spawn_unit(self, unit_class, class_list, number):
+    def spawn_unit(self, unit_class, number):
+        if unit_class == Warrior:
             for _ in range(number):
                 if self.gold >= unit_class.cost:
                     self.gold -= unit_class.cost
                     unit = unit_class()
-                    class_list.append(unit)
+                    self.warriors.append(unit)
+                else:
+                    print('мало золота')
+        elif unit_class == Mage:
+            for _ in range(number):
+                if self.gold >= unit_class.cost:
+                    self.gold -= unit_class.cost
+                    unit = unit_class()
+                    self.mages.append(unit)
                 else:
                     print('мало золота')
     
@@ -236,7 +245,8 @@ class Player:
             for i in range(len(p2.skeletons)):
                 if p2.skeletons[i].dead == False:
                     return
-            self.gold = 10000 + 1000
+            self.gold = 10000
+            p2.gold = 10000
             print('Победил первый игрок')
             winner1 = 1
             return winner1
@@ -252,7 +262,8 @@ class Player:
             for i in range(len(p1.skeletons)):
                 if p1.skeletons[i].dead == False:
                     return
-            self.gold = 10000 + 1000
+            self.gold = 10000
+            p1.gold = 10000
             print('Победил второй игрок')
             winner2 = 1
             return winner2
@@ -276,15 +287,15 @@ if __name__ == '__main__':
     p1 = Player()
     p2 = Player()
 
-    p1.spawn_unit(Warrior, p1.warriors, 10)
-    p1.spawn_unit(Mage, p1.mages, 10)
+    p1.spawn_unit(Warrior, 10)
+    p1.spawn_unit(Mage, 10)
 
     for _ in range(20):
         p1.mages[0].create_skeleton(p1.skeletons)
 
 
-    p2.spawn_unit(Warrior, p2.warriors, 10)
-    p2.spawn_unit(Mage, p2.mages, 10)
+    p2.spawn_unit(Warrior, 10)
+    p2.spawn_unit(Mage, 10)
 
     for _ in range(20):
         p2.mages[0].create_skeleton(p2.skeletons)
@@ -341,7 +352,16 @@ if __name__ == '__main__':
     p1.mages[4] * p2.warriors[0:10]
     p1.mages[5] * p2.skeletons[0:20]
 
+    print(p1.gold, p2.gold)
+    
+    p1.spawn_unit(Warrior, 10)
+    p2.spawn_unit(Mage, 5)
+
+    for _ in range(20):
+        p2.mages[0].create_skeleton(p2.skeletons)
+
     p1.desposition()
     p2.desposition()
 
+    selected_atack(p1.warriors[1:10], p2.skeletons[5:14])
     selected_atack(p1.warriors[1:10], p2.skeletons[5:14])

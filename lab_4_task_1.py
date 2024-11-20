@@ -28,13 +28,17 @@ class StarSystem:
         return StarSystem(planets_1, self.name)
     
     def __rsub__(self, other):
-        pass
+        planets_1 = other[:]
+        planets_2 = self.planets[:]
+        for i in range(len(planets_2)):
+            planets_1.remove(planets_2[i])
     
     def __isub__():
         return
     
     
 system = StarSystem(['planet_1', 'planet_2', 'planet_3'], 'StarSystem1')
+system_2 = StarSystem(['planet_1', 'planet_2', 'planet_3', 'planet_4'], 'StarSystem2')
 
 #add
 system = system + 'planet_4'
@@ -50,5 +54,8 @@ print(system.planets)
 
 
 system = system - 'planet_2'
+print(system.planets)
+
+system = system_2 - system
 print(system.planets)
 
