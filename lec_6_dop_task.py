@@ -205,6 +205,7 @@ class Player:
     
 
     def spawn_unit(self, unit_class, number):
+        assert number <= 0 or isinstance(number, int) == False
         if unit_class == Warrior:
             for _ in range(number):
                 if self.gold >= unit_class.cost:
